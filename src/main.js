@@ -23,7 +23,6 @@ export const getLinks = (router) => {
   const document = documentMd(router);
   const documentRead = readFile(document);
   // console.log(documentRead);
-
   const renderer = new marked.Renderer();
   renderer.link = (url, _, text) => {
     arrayofLinks.push({
