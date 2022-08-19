@@ -1,11 +1,24 @@
-import { exists } from './main.js';
-import { validate } from './validate.js';
+import { exists, getLinks, validate } from './main.js';
 
-export const mdLinks = (pathrouter, options) => new Promise((resolve) => {
+export const mdLinks = (pathrouter, optionValidate) => new Promise((resolve) => {
   if (exists(pathrouter)) {
-    resolve(validate(pathrouter));
+    if (optionValidate === 'validate') {
+      resolve(validate(pathrouter));
+    } else {
+      console.log(getLinks(pathrouter));
+    }
   } else {
     throw new Error('No existe Path');
   }
 });
-mdLinks('src/document.md').then((e) => console.log(e));
+
+const inputStats = (arrayLinks) => {
+  const total = arrayLinks.length;
+  const links = arrayLinks.map((element) => element.href);
+  const unique = new Set(links).size;
+  console.log(total, unique);
+};
+
+mdLinks('src/document.md', 'validate').then((arrayLinks) => {
+  inputStats(arrayLinks);
+});

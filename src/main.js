@@ -4,10 +4,11 @@ import { isAbsolute, resolve, extname } from 'node:path';
 
 import { marked } from 'marked';
 
+import fetch from 'node-fetch';
+
 export const exists = (pathRoot) => existsSync(pathRoot);
 export const absolutePath = (pathRoot) => (isAbsolute(pathRoot) ? pathRoot : resolve(pathRoot));
 export const archivoMd = (route) => extname(route) === '.md';
-
 export const readFile = (route) => readFileSync(route, 'utf-8');
 
 const documentMd = (router) => {
@@ -34,6 +35,34 @@ export const getLinks = (router) => {
   marked(documentRead, { renderer });
   return arrayofLinks;
 };
+
+export const validate = (routers) => {
+  const arrayLinks = getLinks(routers);
+  //   return arrayLinks;
+  const arrPromises = arrayLinks.map((element) => fetch(element.href)
+    .then((e) => {
+      if (e.status >= 200 && e.status < 400) {
+        return {
+          ...element,
+          status: e.status,
+          statusText: e.statusText,
+        };
+      }
+      return {
+        ...element,
+        status: e.status,
+        statusText: 'FAIL',
+      };
+    })
+    .catch(() => ({
+      ...element,
+      status: 'ERROR',
+      statusText: 'FAIL',
+    })));
+  return Promise.all(arrPromises);
+};
+
+
 // console.log(getLinks('src/README.md'));
 // const arrayofLinks = [];
 // const renderer = new marked.Renderer();
