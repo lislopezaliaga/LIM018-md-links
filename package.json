@@ -39,7 +39,6 @@
     "commander": "^9.4.0",
     "inquirer": "^9.1.0",
     "marked": "^4.0.18",
-    "md-links.angezul22": "^1.0.0",
     "node-fetch": "^2.6.7",
     "path": "^0.12.7"
   }

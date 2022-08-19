@@ -1,8 +1,8 @@
 // import { program } from 'commander';
 // import inquirer from 'inquirer';
-import mdLinks from 'md-links.angezul22';
+// import mdLinks from 'md-links.angezul22';
 
-mdLinks('src/document.txt').then((e) => console.log(e));
+// mdLinks('src/document.md').then((e) => console.log(e));
 // program.version('0.0.1').description('A command for files markdown');
 // userPath, { validate, stats }
 // program.command('validat').action(() => {
