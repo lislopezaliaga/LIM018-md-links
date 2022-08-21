@@ -19,4 +19,15 @@ export const cli = (path, options) => {
     .then((arrayLinks) => arrayLinks);
 };
 
-// console.log(cli('src/document.md', '--s --v'));
+const [, , ...args] = process.argv;
+
+const pathRouter = args[0];
+const input = [];
+for (let i = 0; i < args.length; i += 1) {
+  input.push(args[i]);
+}
+const inputJoin = input.join(' ');
+
+cli(pathRouter, inputJoin)
+  .then((response) => console.log(response))
+  .catch((error) => console.log(error));
