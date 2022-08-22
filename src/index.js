@@ -1,8 +1,8 @@
 import { exists, getLinks, validate } from './main.js';
 
-export const mdLinks = (pathrouter, optionValidate) => new Promise((resolve, reject) => {
+export const mdLinks = (pathrouter, options = { validate: false }) => new Promise((resolve) => {
   if (exists(pathrouter)) {
-    if (optionValidate.validate) {
+    if (options.validate === true) {
       resolve(validate(pathrouter));
     } else {
       resolve(getLinks(pathrouter));
@@ -12,19 +12,4 @@ export const mdLinks = (pathrouter, optionValidate) => new Promise((resolve, rej
   }
 });
 
-// const statValidateLinks = (input) => {
-//   const total = input.length;
-//   const unique = new Set(input.map((link) => link.href)).size;
-//   const broken = input.filter((link) => link.statusText === 'FAIL').length;
-//   const result = `\n${chalk.green('Total: ')} ${total} \n${chalk.green('Unique: ')} ${unique} \n${chalk.red('Broken: ')} ${broken}`;
-//   return result;
-// };
-
-// const inputStats = (arrayLinks) => {
-//   const total = arrayLinks.length;
-//   const links = arrayLinks.map((element) => element.href);
-//   const unique = new Set(links).size;
-//   console.log(total, unique);
-// };
-
-// mdLinks('src/document.md', { validate: false }).then((arrayLinks) => console.log(arrayLinks));
+// mdLinks('src', { validate: true }).then((arrayLinks) => console.log(arrayLinks));

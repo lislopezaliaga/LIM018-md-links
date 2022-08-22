@@ -1,6 +1,10 @@
-import { existsSync, readFileSync } from 'node:fs';
+import {
+  existsSync, readFileSync,
+  statSync, readdirSync,
+} from 'node:fs';
+// import * as path from "path";
 
-import { isAbsolute, resolve, extname } from 'node:path';
+import path, { isAbsolute, resolve, extname } from 'node:path';
 
 import { marked } from 'marked';
 
@@ -11,49 +15,69 @@ export const absolutePath = (pathRoot) => (isAbsolute(pathRoot) ? pathRoot : res
 export const archivoMd = (route) => extname(route) === '.md';
 export const readFile = (route) => readFileSync(route, 'utf-8');
 
+export const pathIsFile = (route) => statSync(route).isFile();
+export const pathIsDirectory = (route) => statSync(route).isDirectory();
+export const readDir = (route) => readdirSync(route);
+
+// console.log(readDir('src'));
+
 const documentMd = (router) => {
   const routeAb = absolutePath(router);
-  if (archivoMd(routeAb)) {
-    return routeAb;
+  let arrayFiles = [];
+  if (pathIsFile(routeAb)) {
+    if (archivoMd(routeAb)) {
+      arrayFiles.push(routeAb);
+      // return routeAb;
+    }
+  } else {
+    const arrayDir = readDir(router);
+    arrayDir.forEach((direccion) => {
+      const routerAbsolute = path.join(routeAb, direccion);
+      const arrayfilesOlds = documentMd(routerAbsolute);
+      arrayFiles = arrayFiles.concat(arrayfilesOlds);
+    });
   }
-  throw new Error('Path is not an .md file');
+  return arrayFiles;
 };
+
+// console.log(documentMd('src'));
+
 // console.log(documentMd('document.md'));
 export const getLinks = (router) => {
   const arrayofLinks = [];
+  const expRegular = /http/g;
   const document = documentMd(router);
-  const documentRead = readFile(document);
+  document.forEach((element) => {
+    const documentRead = readFile(element);
+    const renderer = new marked.Renderer();
+    renderer.link = (url, _, text) => {
+      arrayofLinks.push({
+        href: url,
+        text,
+        path: element,
+      });
+    };
+    marked(documentRead, { renderer });
+  });
+
   // console.log(documentRead);
-  const renderer = new marked.Renderer();
-  renderer.link = (url, _, text) => {
-    arrayofLinks.push({
-      href: url,
-      text,
-      path: document,
-    });
-  };
-  marked(documentRead, { renderer });
-  return arrayofLinks;
+
+  const arrayHttp = arrayofLinks.filter((objec) => objec.href.match(expRegular));
+  if (arrayHttp.length === 0) {
+    throw new Error('Este archivo o carpeta no contiene links');
+  }
+  return arrayHttp;
 };
 
 export const validate = (routers) => {
   const arrayLinks = getLinks(routers);
   //   return arrayLinks;
   const arrPromises = arrayLinks.map((element) => fetch(element.href)
-    .then((e) => {
-      if (e.status >= 200 && e.status < 400) {
-        return {
-          ...element,
-          status: e.status,
-          statusText: e.statusText,
-        };
-      }
-      return {
-        ...element,
-        status: e.status,
-        statusText: 'FAIL',
-      };
-    })
+    .then((peticion) => ({
+      ...element,
+      status: peticion.status,
+      statusText: peticion.status < 400 ? 'ok' : 'fail',
+    }))
     .catch(() => ({
       ...element,
       status: 'ERROR',
@@ -61,86 +85,3 @@ export const validate = (routers) => {
     })));
   return Promise.all(arrPromises);
 };
-
-
-// console.log(getLinks('src/README.md'));
-// const arrayofLinks = [];
-// const renderer = new marked.Renderer();
-// const file = readFile('src/document.md');
-// renderer.link = (urlFile, _, urlText) => {
-//   arrayofLinks.push({
-//     href: urlFile,
-//     text: urlText,
-//     // path: filePath,
-//   });
-// };
-// marked(file, { renderer });
-// console.log(arrayofLinks);
-
-// // console.log(renderer);
-// // const getLinksMd = (route) => {
-// //     const arrayMdFiles = getMdFiles(route);
-// //     const renderer = new marked.Renderer();
-// //     const arrayofLinks = [];
-// //     arrayMdFiles.forEach((filePath) => {
-// //       const file = fs.readFileSync(filePath, 'utf8');
-// //       renderer.link = (urlFile, _, urlText) => {
-// //         arrayofLinks.push({
-// //           href: urlFile,
-// //           text: urlText,
-// //           path: filePath,
-// //         });
-// //       };
-// //       marked(file, { renderer });
-// //       // debug('File', marked(file.toString(), { renderer }));
-// //     });
-// //     return arrayofLinks;
-// //   };
-
-// // onst getMdFiles = (routeFile) => {
-// //     let arrayMdFile = [];
-// //     const route = getAbsoluteRoute(routeFile);
-// //     if (isFile(route)) {
-// //       if (isMdFile(route)) {
-// //         arrayMdFile.push(route);
-// //       }
-// //     } else {
-// //       const arrayOfFiles = fs.readdirSync(route);
-// //       arrayOfFiles.forEach((file) => {
-// //         const arrayMd = getMdFiles(path.join(route, file));
-// //         arrayMdFile = arrayMdFile.concat(arrayMd);
-// //       });
-// //     }
-// //     return arrayMdFile;
-// //   };
-
-// // console.log(archivoMd('C:/Lisita/Desktop/LIM018-md-links/src/document.md'));
-
-// console.log(convertrelativeToAbsolutePath('src/document.md'));
-// const verifyDirectory = (inputPath) => {
-//   getInformation = fs.statSync(inputPath)
-//   return getInformation
-//   // return getInformation.isDirectory();
-// }
-// console.log(verifyDirectory('src/document'))
-// console.log(a);
-// const b = path.isAbsolute('document.md')
-// console.log(b);
-
-// existsSync= require 'fs';
-// import { existsSync } from 'node:fs';
-// console.log(existsSync);
-// import { isAbsolute, resolve } from 'node:path'
-
-// //Función si existe la ruta
-// export const getpathExist = (route) => existsSync(route);
-// //Función identifica si la ruta es absoluta
-// export const getpathAbsolute = (route) => isAbsolute(route);
-// //Función que convierte la ruta relativa a absoluta
-// export const convertrelativeToAbsolutePath = (route) => resolve(route);
-// //Función que da lectura al archivo
-// export const readFile = (route) => readFileSync(route,'utf-8');
-// //Función que determina si es un archivo
-// export const pathIsFile = (route) => statSync(route).isFile();
-// //Función que determina si es un directorio
-// export const pathIsDirectory = (route) => statSync(route).isDirectory();

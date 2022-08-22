@@ -3,13 +3,13 @@ import { mdLinks } from './index.js';
 
 export const cli = (path, options) => {
   if (options) {
-    if (options === '--validate' || options === '--v') {
+    if (options === '--validate') {
       return mdLinks(path, { validate: true })
         .then((links) => links);
-    } if (options === '--stats' || options === '--s') {
+    } if (options === '--stats') {
       return mdLinks(path, { validate: true })
         .then((links) => inputStats(links));
-    } if (options === '--stats --validate' || options === '--validate --stats' || options === '--v --s' || options === '--s --v') {
+    } if (options === '--stats --validate' || options === '--validate --stats') {
       return mdLinks(path, { validate: true })
         .then((links) => statsValidate(links));
     }
@@ -23,7 +23,7 @@ const [, , ...args] = process.argv;
 
 const pathRouter = args[0];
 const input = [];
-for (let i = 0; i < args.length; i += 1) {
+for (let i = 1; i < args.length; i += 1) {
   input.push(args[i]);
 }
 const inputJoin = input.join(' ');

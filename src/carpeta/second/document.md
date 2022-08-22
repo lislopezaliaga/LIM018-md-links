@@ -25,7 +25,7 @@ this is an ~~text~~ strikethrough
 
 [fazt.com](http://www.faztweb.com)
 
-[fa.com](http://www.faztweb.com)
+[fa.com](http://www.fweb.com)
 
 > this is quote
 
