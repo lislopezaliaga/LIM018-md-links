@@ -1,6 +1,7 @@
 import { exists, getLinks, validate } from './main.js';
 
-export const mdLinks = (pathrouter, options = { validate: false }) => new Promise((resolve) => {
+// eslint-disable-next-line max-len
+export const mdLinks = (pathrouter, options = { validate: false }) => new Promise((resolve, reject) => {
   if (exists(pathrouter)) {
     if (options.validate === true) {
       resolve(validate(pathrouter));
@@ -8,8 +9,9 @@ export const mdLinks = (pathrouter, options = { validate: false }) => new Promis
       resolve(getLinks(pathrouter));
     }
   } else {
-    console.log('No existe esta ruta ');
+    const errorRuta = 'No existe esta ruta';
+    reject(errorRuta);
   }
 });
 
-// mdLinks('src', { validate: true }).then((arrayLinks) => console.log(arrayLinks));
+mdLinks('pruebas', { validate: true }).then((arrayLinks) => console.log(arrayLinks)).catch((error) => console.log(error));

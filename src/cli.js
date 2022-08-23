@@ -1,4 +1,5 @@
 import { inputStats, statsValidate } from './cliOptions.js';
+
 import { mdLinks } from './index.js';
 
 export const cli = (path, options) => {
@@ -30,4 +31,4 @@ const inputJoin = input.join(' ');
 
 cli(pathRouter, inputJoin)
   .then((response) => console.log(response))
-  .catch((error) => console.log(error));
+  .catch((error) => console.error(error));

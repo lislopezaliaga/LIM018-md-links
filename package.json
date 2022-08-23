@@ -13,7 +13,9 @@
   "scripts": {
     "dev": "--exec babel-node src/index.js",
     "lint": "eslint src/",
+    "eslint": "eslint --ext .js src/ test/",
     "test": "jest --coverage "
+
   },
   "repository": {
     "type": "git",
