@@ -1,5 +1,9 @@
+import fetch from 'node-fetch';
 import { mdLinks } from '../src/index.js';
-import { outputLinks } from './cases/casos.js';
+
+import { ouputFetch, outputLinks } from './cases/casos.js';
+
+jest.mock('node-fetch', () => jest.fn());
 
 describe('La funcion mdLinks verifica si existe o no una ruta', () => {
   it('Caso en que no exista esa ruta', () => {
@@ -12,6 +16,7 @@ describe('La funcion mdLinks verifica si existe o no una ruta', () => {
 describe('Cuando el usuario le manda una ruta a MDlinks', () => {
   it('Deberia dar un array de objetos con las propiedades href,title, file', () => {
     mdLinks('pruebas').then((e) => {
+      console.log(e);
       expect(e).toEqual(outputLinks);
     });
   });
@@ -21,10 +26,20 @@ describe('Cuando el usuario le manda una ruta a MDlinks', () => {
     });
   });
 });
+
 describe('Cuando le pasamos validate:true   ', () => {
-  it('Deberia dar un array de objetos con las propiedades href,title, file, status, ', () => {
+  it('Deberia dar un array de objetos con las propiedades href,title, file, status, ', (done) => {
+    fetch.mockResolvedValueOnce({ status: 200, statusText: 'ok' });
+    fetch.mockResolvedValueOnce({ status: 404, statusText: 'fail' });
+    fetch.mockResolvedValueOnce({ status: 503, statusText: 'fail' });
+    fetch.mockResolvedValueOnce({ status: 503, statusText: 'fail' });
+    fetch.mockResolvedValueOnce({ status: 200, statusText: 'ok' });
+    fetch.mockRejectedValueOnce({ status: 'ERROR', statusText: 'FAIL' });
+    fetch.mockResolvedValueOnce({ status: 200, statusText: 'ok' });
+    fetch.mockResolvedValueOnce({ status: 200, statusText: 'ok' });
     mdLinks('pruebas', { validate: true }).then((e) => {
-      expect(e).toEqual(outputLinks);
+      expect(e).toEqual(ouputFetch);
+      done();
     });
   });
 });

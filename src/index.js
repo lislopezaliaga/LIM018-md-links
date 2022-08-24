@@ -14,4 +14,14 @@ export const mdLinks = (pathrouter, options = { validate: false }) => new Promis
   }
 });
 
-mdLinks('pruebas', { validate: true }).then((arrayLinks) => console.log(arrayLinks)).catch((error) => console.log(error));
+// mdLinks('pruebas').then((arrayLinks) => console.log(arrayLinks));
+// // .catch((error) => console.log(error));
+
+Object.assign(
+  {
+    files: [ '**/*.test.js' ],
+    env: { jest: true },
+    plugins: [ 'jest' ],
+  },
+  require('eslint-plugin-jest').configs.recommended
+)
