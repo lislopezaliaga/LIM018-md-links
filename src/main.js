@@ -85,3 +85,4 @@ export const validate = (routers) => {
     })));
   return Promise.all(arrPromises);
 };
+

@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+
 import { mdLinks } from '../src/index.js';
 
 import { ouputFetch, outputLinks } from './cases/casos.js';
