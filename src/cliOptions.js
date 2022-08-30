@@ -15,7 +15,7 @@ export const inputStats = (arrayLinks) => {
 };
 // ${chalk.magentaBright(element.text.substring(0, 50))}
 export const statsValidate = (arrayLinks) => {
-  const brokenLinks = arrayLinks.filter((element) => element.status > 400).length;
+  const brokenLinks = arrayLinks.filter((element) => element.status > 400 || element.status==='ERROR').length;
   const stats = `
   ${inputStats(arrayLinks)}
   ${chalk.yellowBright.bold(`    Broken: `)}${chalk.hex('#FFBA08')(brokenLinks)}
