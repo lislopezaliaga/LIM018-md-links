@@ -37,6 +37,7 @@ const documentMd = (router) => {
       arrayFiles = arrayFiles.concat(arrayfilesOlds);
     });
   }
+
   return arrayFiles;
 };
 
@@ -64,7 +65,7 @@ export const getLinks = (router) => {
 
   const arrayHttp = arrayofLinks.filter((objec) => objec.href.match(expRegular));
   if (arrayHttp.length === 0) {
-    throw new Error('Este archivo o carpeta no contiene links');
+    throw new Error('Este archivo o archivos no contienen links');
   }
   return arrayHttp;
 };

@@ -44,3 +44,19 @@ describe('Cuando le pasamos validate:true   ', () => {
     });
   });
 });
+
+// describe('Cuando el usuario le manda una ruta a MDlinks', () => {
+//   it('Aunque options.validate:false Deberia dar un array de objetos con las propiedades href,title, file', () => {
+//     mdLinks('carpeta', { validate: false }).catch((e) => {
+//       expect(e).toThrow('Este archivo o archivos no contienen links');
+//     });
+//   });
+// });
+
+// test("Test description", () => {
+//   const t = () => {
+//     throw new TypeError("UNKNOWN ERROR");
+//   };
+//   expect(t).toThrow(TypeError);
+//   expect(t).toThrow("UNKNOWN ERROR");
+// });

@@ -1,5 +1,5 @@
 {
-  "name": "md-links",
+  "name": "md-links-lis",
   "version": "0.1.0",
   "engines": {
     "node": ">=16.x"
@@ -11,22 +11,26 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "--exec babel-node src/index.js",
     "lint": "eslint src/",
     "eslint": "eslint --ext .js src/ test/",
     "test": "jest --coverage "
   },
+  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lislopezaliaga/LIM018-md-links.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Lisbeth Lopez",
   "license": "ISC",
+
   "bugs": {
     "url": "https://github.com/lislopezaliaga/LIM018-md-links/issues"
   },
   "homepage": "https://github.com/lislopezaliaga/LIM018-md-links#readme",
+  "bin":{
+    "md-links":"./src/cli.js"
+  },
   "devDependencies": {
     "@babel/core": "^7.18.10",
     "@babel/node": "^7.18.10",
