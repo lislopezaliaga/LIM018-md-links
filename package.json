@@ -21,7 +21,7 @@
     "url": "git+https://github.com/lislopezaliaga/LIM018-md-links.git"
   },
   "publishConfig": {
-    "lislopezaliaga:registry": "https://npm.pkg.github.com"
+    "@lislopezaliaga:registry": "https://npm.pkg.github.com"
   },
   "keywords": [],
   "author": "Lisbeth Lopez",
