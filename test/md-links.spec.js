@@ -44,6 +44,13 @@ describe('Cuando le pasamos validate:true   ', () => {
     });
   });
 });
+// describe('Caso en que no halla', () => {
+//   it('Caso en que no exista esa ruta', () => {
+//     mdLinks('pruebas/archivo.md').then((e) => e).catch((error) => {
+//       expect(error).toBe('Este archivo o archivos no contienen links');
+//     });
+//   });
+// });
 
 // describe('Cuando el usuario le manda una ruta a MDlinks', () => {
 //   it('Aunque options.validate:false Deberia dar un array de objetos con las propiedades href,title, file', () => {
